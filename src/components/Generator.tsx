@@ -14,8 +14,8 @@ export default () => {
 		createSignal<System>({ settings: '' });
 	const [systemRoleEditing, setSystemRoleEditing] = createSignal(false);
 	const [systemRoleSaveEditing, setSystemRoleSaveEditing] = createSignal(false);
-	const [temperature, setTemperature] = createSignal<number>(localStorage.getItem('temp')
-	? Number(localStorage.getItem('temp'))
+	const [temperature, setTemperature] = createSignal<number>(JSON.parse(localStorage.getItem('temp') || '')
+	? Number(JSON.parse(localStorage.getItem('temp')))
 	: 30);
 	const [messageList, setMessageList] = createSignal<ChatMessage[]>([]);
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
