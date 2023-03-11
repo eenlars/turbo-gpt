@@ -6,6 +6,7 @@ import SystemRoleSettings from './SystemRoleSettings';
 import _ from 'lodash';
 import { generateSignature } from '@/utils/auth';
 import { System } from './SystemRoleSettings';
+import { PostMessage } from '@/pages/api/generate';
 
 export default () => {
 	let inputRef: HTMLTextAreaElement;
@@ -13,6 +14,9 @@ export default () => {
 		createSignal<System>({ settings: '' });
 	const [systemRoleEditing, setSystemRoleEditing] = createSignal(false);
 	const [systemRoleSaveEditing, setSystemRoleSaveEditing] = createSignal(false);
+	const [temperature, setTemperature] = createSignal<number>(localStorage.getItem('temp')
+	? Number(localStorage.getItem('temp'))
+	: 30);
 	const [messageList, setMessageList] = createSignal<ChatMessage[]>([]);
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
 		createSignal('');
@@ -25,7 +29,7 @@ export default () => {
 			return;
 		}
 		// @ts-ignore
-		if (window?.umami) umami.trackEvent('chat_generate');
+		//if (window?.umami) umami.trackEvent('chat_generate');
 		inputRef.value = '';
 		setMessageList([
 			...messageList(),
@@ -67,13 +71,14 @@ export default () => {
 					messages: requestMessageList,
 					time: timestamp,
 					pass: storagePassword,
+					temperature: temperature(),
 					sign: await generateSignature({
 						t: timestamp,
 						m:
 							requestMessageList?.[requestMessageList.length - 1]?.content ||
 							'',
 					}),
-				}),
+				} as PostMessage),
 				signal: controller.signal,
 			});
 			if (!response.ok) {
@@ -171,6 +176,8 @@ export default () => {
 				setSystemRoleSaveEditing={setSystemRoleSaveEditing}
 				currentSystemRoleSettings={currentSystemRoleSettings}
 				setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
+				temperature={temperature}
+				setTemperature={setTemperature}
 			/>
 			<Index each={messageList()}>
 				{(message, index) => (

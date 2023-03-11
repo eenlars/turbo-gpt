@@ -10,6 +10,8 @@ interface Props {
 	setSystemRoleSaveEditing: Setter<boolean>;
 	currentSystemRoleSettings: Accessor<System>;
 	setCurrentSystemRoleSettings: Setter<System>;
+	temperature: Accessor<number>;
+	setTemperature: Setter<number>;
 }
 
 export type System = { name?: string; settings: string };
@@ -18,6 +20,7 @@ export default (props: Props) => {
 	let systemInputRef: HTMLTextAreaElement;
 	let systemInputRef2: HTMLTextAreaElement;
 	const [systems, setSystems] = createSignal<System[]>([]);
+	const [editTemp, setEditTemp] = createSignal<boolean>(false);
 
 	const getSystems = () => {
 		try {
@@ -89,9 +92,9 @@ export default (props: Props) => {
 	};
 
 	const handleAddSystemRole = () => {
-    props.setCurrentSystemRoleSettings({ name: null, settings: '' });
-    props.setSystemRoleEditing(!props.systemRoleEditing());
-  };
+		props.setCurrentSystemRoleSettings({ name: null, settings: '' });
+		props.setSystemRoleEditing(!props.systemRoleEditing());
+	};
 
 	const isFromMemory = () => {
 		return props.currentSystemRoleSettings().name?.length > 0;
@@ -102,8 +105,38 @@ export default (props: Props) => {
 		return name === system.name;
 	};
 
+	const changeTemp = () => {
+		localStorage.setItem('temp', props.temperature() + "")
+		setEditTemp(false)
+	}
+
 	return (
 		<div class='my-4'>
+			<Show when={!editTemp()}>
+				<span onClick={() => setEditTemp(true)}>
+					<button class='inline-flex items-center justify-center bg-slate/20 gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 '>
+						Edit temperature
+					</button>
+				</span>
+			</Show>
+			<Show when={editTemp()}>
+				<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
+					<input
+						type='number'
+						class='bg-gray-100 border border-gray-300 text-black rounded-md py-2 px-4 w-32 leading-tight focus:outline-none focus:bg-white focus:border-blue-500'
+						placeholder='Temp 0-100'
+						onInput={(event) => {
+							props.setTemperature(event.target.value);
+						}}
+						value={props.temperature()}
+					/>
+					<span onClick={changeTemp}>
+						<button class='inline-flex items-center justify-center bg-slate/20 gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 '>
+							Confirm
+						</button>
+					</span>
+				</div>
+			</Show>
 			<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
 				<Show
 					when={
