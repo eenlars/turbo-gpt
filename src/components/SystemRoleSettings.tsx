@@ -38,7 +38,8 @@ export default (props: Props) => {
 	};
 
 	const saveSystem = () => {
-		if (systemInputRef2.value?.length < 1 || systemInputRef.value?.length < 1) return
+		if (systemInputRef2.value?.length < 1 || systemInputRef.value?.length < 1)
+			return;
 
 		const system: System = {
 			name: systemInputRef2.value,
@@ -67,7 +68,7 @@ export default (props: Props) => {
 		);
 		localStorage.setItem('systems', JSON.stringify(updatedSystems));
 		setSystems(updatedSystems);
-		props.setSystemRoleEditing(true);
+		props.setCurrentSystemRoleSettings({ name: null, settings: '' });
 	};
 
 	const handleSystemSelect = (system: System) => {
@@ -87,8 +88,18 @@ export default (props: Props) => {
 		props.setSystemRoleEditing(false);
 	};
 
+	const handleAddSystemRole = () => {
+    props.setCurrentSystemRoleSettings({ name: null, settings: '' });
+    props.setSystemRoleEditing(!props.systemRoleEditing());
+  };
+
 	const isFromMemory = () => {
 		return props.currentSystemRoleSettings().name?.length > 0;
+	};
+
+	const isSelected = (system: System) => {
+		const name = props.currentSystemRoleSettings().name;
+		return name === system.name;
 	};
 
 	return (
@@ -100,9 +111,7 @@ export default (props: Props) => {
 					}
 				>
 					<span
-						onClick={() =>
-							props.setSystemRoleEditing(!props.systemRoleEditing())
-						}
+						onClick={handleAddSystemRole}
 						class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
 					>
 						<IconEnv />
@@ -113,7 +122,8 @@ export default (props: Props) => {
 					<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
 						{systems().map((system: System) => (
 							<button
-								class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/50'
+								class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 
+              ${isSelected(system) ? 'bg-slate/100' : 'bg-slate/20'}`}
 								onClick={() => handleSystemSelect(system)}
 								disabled={props.systemRoleSaveEditing()}
 							>
@@ -121,6 +131,20 @@ export default (props: Props) => {
 							</button>
 						))}
 					</div>
+				</Show>
+				<Show
+					when={
+						!props.systemRoleSaveEditing() &&
+						props.currentSystemRoleSettings().name &&
+						!props.systemRoleEditing()
+					}
+				>
+					<span
+						onClick={handleButtonClickDelete}
+						class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
+					>
+						<span>Delete this system role</span>
+					</span>
 				</Show>
 			</div>
 			<Show when={!props.systemRoleEditing()}>
@@ -145,20 +169,6 @@ export default (props: Props) => {
 							class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mt-2 mb-6 mr-1 transition-colors cursor-pointer hover:bg-slate/50'
 						>
 							<span>Save</span>
-						</span>
-					</Show>
-
-					<Show
-						when={
-							!props.systemRoleSaveEditing() &&
-							props.currentSystemRoleSettings().name
-						}
-					>
-						<span
-							onClick={handleButtonClickDelete}
-							class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
-						>
-							<span>Delete</span>
 						</span>
 					</Show>
 
@@ -198,7 +208,7 @@ export default (props: Props) => {
 								h-12
 								px-4
 								py-2
-                mb-10
+								mb-10
 								bg-slate
 								bg-op-15
 								hover:bg-op-20
