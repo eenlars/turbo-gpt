@@ -196,7 +196,6 @@ export default () => {
 					/>
 				)}
 			</Index>
-
 			<Show when={loading()}>
 				<div
 					class='px-2 py-0.5 border border-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10'
@@ -223,7 +222,7 @@ export default () => {
 				)}
 			>
 				<div
-					class='my-4 flex items-center gap-2 transition-opacity'
+					class='my-4 flex flex-col gap-2 transition-opacity'
 					class:op-50={systemRoleEditing()}
 				>
 					<textarea
@@ -242,7 +241,7 @@ export default () => {
 						px-3
 						py-3
 						min-h-12
-						max-h-36
+						max-h-48
 						rounded-sm
 						bg-slate
 						bg-op-15
@@ -254,33 +253,36 @@ export default () => {
 						dark='placeholder:op-30'
 						scroll-pa-8px
 					/>
-					<button
-						onClick={handleButtonClick}
-						disabled={systemRoleEditing()}
-						h-12
-						px-4
-						py-2
-						bg-slate
-						bg-op-15
-						hover:bg-op-20
-						rounded-sm
-					>
-						Send
-					</button>
-					<button
-						title='Clear'
-						onClick={clear}
-						disabled={systemRoleEditing()}
-						h-12
-						px-4
-						py-2
-						bg-slate
-						bg-op-15
-						hover:bg-op-20
-						rounded-sm
-					>
-						<IconClear />
-					</button>
+					<div class='my-4 flex items-start gap-2 transition-opacity'>
+						<button
+							onClick={handleButtonClick}
+							disabled={systemRoleEditing()}
+							h-12
+							px-4
+							py-2
+							w-full
+							bg-slate
+							bg-op-15
+							hover:bg-op-20
+							rounded-sm
+						>
+							Send
+						</button>
+						<button
+							title='Clear'
+							onClick={clear}
+							disabled={systemRoleEditing()}
+							h-12
+							px-4
+							py-2
+							bg-slate
+							bg-op-15
+							hover:bg-op-20
+							rounded-sm
+						>
+							<IconClear />
+						</button>
+					</div>
 				</div>
 			</Show>
 		</div>

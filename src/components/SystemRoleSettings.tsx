@@ -155,7 +155,7 @@ export default (props: Props) => {
 				</Show>
 				<Show
 					when={
-						props.canEdit() && (isFromMemory() || !props.systemRoleEditing())
+						isFromMemory() || !props.systemRoleEditing()
 					}
 				>
 					<span
@@ -216,7 +216,7 @@ export default (props: Props) => {
 						</span>
 					</Show>
 
-					<Show when={props.systemRoleSaveEditing() && props.canEdit()}>
+					<Show when={props.systemRoleSaveEditing()}>
 						<div class='mt-1'>
 							<div class='flex items-center gap-1 op-50 dark:op-60'>
 								<span>Save Role:</span>
@@ -264,7 +264,7 @@ export default (props: Props) => {
 					</Show>
 				</Show>
 			</Show>
-			<Show when={props.systemRoleEditing() && props.canEdit()}>
+			<Show when={props.systemRoleEditing()}>
 				<div>
 					<div class='flex items-center gap-1 op-50 dark:op-60'>
 						<IconEnv />
