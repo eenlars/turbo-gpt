@@ -121,6 +121,20 @@ export default (props: Props) => {
 						Edit temperature
 					</button>
 				</span>
+				<Show
+					when={
+						!props.systemRoleSaveEditing() &&
+						props.currentSystemRoleSettings().name &&
+						!props.systemRoleEditing()
+					}
+				>
+					<span
+						onClick={handleButtonClickDelete}
+						class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
+					>
+						<span>Delete Role</span>
+					</span>
+				</Show>
 			</Show>
 			<Show when={editTemp()}>
 				<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
@@ -174,20 +188,6 @@ export default (props: Props) => {
 						</div>
 					</Show>
 				</div>
-				<Show
-					when={
-						!props.systemRoleSaveEditing() &&
-						props.currentSystemRoleSettings().name &&
-						!props.systemRoleEditing()
-					}
-				>
-					<span
-						onClick={handleButtonClickDelete}
-						class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
-					>
-						<span>Delete</span>
-					</span>
-				</Show>
 			</div>
 			<Show when={!props.systemRoleEditing()}>
 				<Show when={props.currentSystemRoleSettings().settings}>
