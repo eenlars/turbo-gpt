@@ -10,6 +10,7 @@ export default () => {
   let inputRef: HTMLTextAreaElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
   const [systemRoleEditing, setSystemRoleEditing] = createSignal(false)
+  const [systemRoleSaveEditing, setSystemRoleSaveEditing] = createSignal(false)
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([])
   const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
   const [loading, setLoading] = createSignal(false)
@@ -157,6 +158,8 @@ export default () => {
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
         setSystemRoleEditing={setSystemRoleEditing}
+        systemRoleSaveEditing={systemRoleSaveEditing}
+        setSystemRoleSaveEditing={setSystemRoleSaveEditing}
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
       />
