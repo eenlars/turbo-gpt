@@ -143,7 +143,7 @@ export default (props: Props) => {
 						onClick={handleButtonClickDelete}
 						class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
 					>
-						<span>Delete this system role</span>
+						<span>Delete</span>
 					</span>
 				</Show>
 			</div>
