@@ -196,6 +196,15 @@ export default () => {
 					/>
 				)}
 			</Index>
+
+			<Show when={loading()}>
+				<div
+					class='px-2 py-0.5 border border-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10'
+					onClick={stopStreamFetch}
+				>
+					Stop
+				</div>
+			</Show>
 			{currentAssistantMessage() && (
 				<MessageItem role='assistant' message={currentAssistantMessage} />
 			)}
