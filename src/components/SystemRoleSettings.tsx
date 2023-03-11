@@ -1,4 +1,4 @@
-import { Show, onMount, createSignal } from 'solid-js';
+import { Show, onMount, createSignal, For } from 'solid-js';
 import type { Accessor, Setter } from 'solid-js';
 import IconEnv from './icons/Env';
 
@@ -115,29 +115,29 @@ export default (props: Props) => {
 
 	return (
 		<div class='my-4'>
-			<Show when={!editTemp()}>
-				<span onClick={() => setEditTemp(true)}>
-					<button class='inline-flex items-center justify-center bg-slate/20 gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 '>
-						Edit temperature
-					</button>
-				</span>
-				<Show
-					when={
-						!props.systemRoleSaveEditing() &&
-						props.currentSystemRoleSettings().name &&
-						!props.systemRoleEditing()
-					}
-				>
-					<span
-						onClick={handleButtonClickDelete}
-						class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
-					>
-						<span>Delete Role</span>
+			<div class='flex flex-row flex-wrap items-center gap-1 op-50 dark:op-60'>
+				<Show when={!editTemp()}>
+					<span onClick={() => setEditTemp(true)}>
+						<button class='inline-flex items-center justify-center bg-slate/20 gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 '>
+							Edit temperature
+						</button>
 					</span>
+					<Show
+						when={
+							!props.systemRoleSaveEditing() &&
+							props.currentSystemRoleSettings().name &&
+							!props.systemRoleEditing()
+						}
+					>
+						<span
+							onClick={handleButtonClickDelete}
+							class='inline-flex items-center justify-center gap-1 text-sm bg-red/20 px-2 py-1 my-2 transition-colors cursor-pointer hover:bg-slate/50'
+						>
+							<span>Delete Role</span>
+						</span>
+					</Show>
 				</Show>
-			</Show>
-			<Show when={editTemp()}>
-				<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
+				<Show when={editTemp()}>
 					<input
 						type='number'
 						class='bg-gray-100 border border-gray-300 text-black rounded-md py-2 px-4 w-32 leading-tight focus:outline-none focus:bg-white focus:border-blue-500'
@@ -152,39 +152,41 @@ export default (props: Props) => {
 							Confirm
 						</button>
 					</span>
-				</div>
-			</Show>
+				</Show>
+				<Show
+					when={
+						props.canEdit() && (isFromMemory() || !props.systemRoleEditing())
+					}
+				>
+					<span
+						onClick={handleAddSystemRole}
+						class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
+					>
+						<IconEnv />
+						<span>Add System Role</span>
+					</span>
+				</Show>
+			</div>
 			<div class='flex flex-row flex-wrap justify-between items-center'>
 				<div class='flex items-center flex-wrap gap-1 op-50 dark:op-60'>
-					<Show
-						when={
-							props.canEdit() && (isFromMemory() || !props.systemRoleEditing())
-						}
-					>
-						<span
-							onClick={handleAddSystemRole}
-							class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
-						>
-							<IconEnv />
-							<span>Add System Role</span>
-						</span>
-					</Show>
-					<Show when={systems().length > 0}>
+					<Show when={systems().length > 0 && !props.systemRoleEditing()}>
 						<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
-							{systems().map((system: System) => (
-								<button
-									class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer 
+							<For each={systems()}>
+								{(system: System) => (
+									<button
+										class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer 
               ${
 								isSelected(system)
 									? 'bg-slate/100 text-black hover:bg-slate/50'
 									: 'bg-slate/20 hover:bg-slate/100'
 							}`}
-									onClick={() => handleSystemSelect(system)}
-									disabled={props.systemRoleSaveEditing()}
-								>
-									{system.name}
-								</button>
-							))}
+										onClick={() => handleSystemSelect(system)}
+										disabled={props.systemRoleSaveEditing()}
+									>
+										{system.name}
+									</button>
+								)}
+							</For>
 						</div>
 					</Show>
 				</div>
