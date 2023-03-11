@@ -75,6 +75,9 @@ export default (props: Props) => {
 	};
 
 	const handleSystemSelect = (system: System) => {
+		if (props.currentSystemRoleSettings().settings === system.settings) {
+			system = { name: null, settings: '' };
+		}
 		props.setCurrentSystemRoleSettings({
 			settings: system.settings,
 			name: system.name,
@@ -106,9 +109,9 @@ export default (props: Props) => {
 	};
 
 	const changeTemp = () => {
-		localStorage.setItem('temp', props.temperature() + "")
-		setEditTemp(false)
-	}
+		localStorage.setItem('temp', props.temperature() + '');
+		setEditTemp(false);
+	};
 
 	return (
 		<div class='my-4'>
@@ -137,34 +140,40 @@ export default (props: Props) => {
 					</span>
 				</div>
 			</Show>
-			<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
-				<Show
-					when={
-						props.canEdit() && (isFromMemory() || !props.systemRoleEditing())
-					}
-				>
-					<span
-						onClick={handleAddSystemRole}
-						class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
+			<div class='flex flex-row flex-wrap justify-between items-center'>
+				<div class='flex items-center flex-wrap gap-1 op-50 dark:op-60'>
+					<Show
+						when={
+							props.canEdit() && (isFromMemory() || !props.systemRoleEditing())
+						}
 					>
-						<IconEnv />
-						<span>Add System Role</span>
-					</span>
-				</Show>
-				<Show when={systems().length > 0}>
-					<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
-						{systems().map((system: System) => (
-							<button
-								class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer hover:bg-slate/100 
-              ${isSelected(system) ? 'bg-slate/100' : 'bg-slate/20'}`}
-								onClick={() => handleSystemSelect(system)}
-								disabled={props.systemRoleSaveEditing()}
-							>
-								{system.name}
-							</button>
-						))}
-					</div>
-				</Show>
+						<span
+							onClick={handleAddSystemRole}
+							class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
+						>
+							<IconEnv />
+							<span>Add System Role</span>
+						</span>
+					</Show>
+					<Show when={systems().length > 0}>
+						<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
+							{systems().map((system: System) => (
+								<button
+									class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer 
+              ${
+								isSelected(system)
+									? 'bg-slate/100 text-black hover:bg-slate/50'
+									: 'bg-slate/20 hover:bg-slate/100'
+							}`}
+									onClick={() => handleSystemSelect(system)}
+									disabled={props.systemRoleSaveEditing()}
+								>
+									{system.name}
+								</button>
+							))}
+						</div>
+					</Show>
+				</div>
 				<Show
 					when={
 						!props.systemRoleSaveEditing() &&

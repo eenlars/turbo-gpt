@@ -1,5 +1,5 @@
 import type { ChatMessage } from '@/types';
-import { createSignal, Index, Show } from 'solid-js';
+import { createSignal, Index, Show, createEffect } from 'solid-js';
 import IconClear from './icons/Clear';
 import MessageItem from './MessageItem';
 import SystemRoleSettings from './SystemRoleSettings';
@@ -14,14 +14,18 @@ export default () => {
 		createSignal<System>({ settings: '' });
 	const [systemRoleEditing, setSystemRoleEditing] = createSignal(false);
 	const [systemRoleSaveEditing, setSystemRoleSaveEditing] = createSignal(false);
-	const [temperature, setTemperature] = createSignal<number>(localStorage.getItem('temp')
-	? Number(localStorage.getItem('temp'))
-	: 30);
+	const [temperature, setTemperature] = createSignal<number>(30);
 	const [messageList, setMessageList] = createSignal<ChatMessage[]>([]);
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
 		createSignal('');
 	const [loading, setLoading] = createSignal(false);
 	const [controller, setController] = createSignal<AbortController>(null);
+
+	createEffect(() => {
+		const storedValue =
+			(JSON.parse(localStorage.getItem('temp') || '') as number) || 30;
+		setTemperature(Number(storedValue));
+	});
 
 	const handleButtonClick = async () => {
 		const inputValue = inputRef.value;
