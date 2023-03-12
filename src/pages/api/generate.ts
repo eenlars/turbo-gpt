@@ -41,7 +41,7 @@ export const post: APIRoute = async (context) => {
 	) {
 		return new Response('Invalid signature');
 	}
-  const temp : number = temperature && temperature >= 0 && temperature <= 2 ? Number(temperature) : 0.6
+  const temp : number = temperature && temperature >= 0 && temperature <= 100 ? Number((temperature/100)*2) : 0.6
 
 	const initOptions = generatePayload(apiKey, messages, temp);
 	// #vercel-disable-blocks
