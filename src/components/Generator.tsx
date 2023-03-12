@@ -171,7 +171,7 @@ export default () => {
 	};
 
 	return (
-		<div my-6>
+		<div>
 			<SystemRoleSettings
 				canEdit={() => messageList().length === 0}
 				systemRoleEditing={systemRoleEditing}
@@ -198,7 +198,7 @@ export default () => {
 			</Index>
 			<Show when={loading()}>
 				<div
-					class='px-2 py-0.5 border border-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10'
+					class='px-2 py-0.5 mb-4 border border-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10'
 					onClick={stopStreamFetch}
 				>
 					Stop

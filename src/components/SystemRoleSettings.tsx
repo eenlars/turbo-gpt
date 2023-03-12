@@ -21,6 +21,7 @@ export default (props: Props) => {
 	let systemInputRef2: HTMLTextAreaElement;
 	const [systems, setSystems] = createSignal<System[]>([]);
 	const [editTemp, setEditTemp] = createSignal<boolean>(false);
+	const [hideRole, setHideRole] = createSignal<boolean>(false);
 
 	const getSystems = () => {
 		try {
@@ -187,12 +188,21 @@ export default (props: Props) => {
 									</button>
 								)}
 							</For>
+							<Show when={props.currentSystemRoleSettings().name}>
+							<button
+										class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer`}
+										onClick={() => setHideRole(!hideRole())}
+										disabled={props.systemRoleSaveEditing()}
+									>
+										{props.currentSystemRoleSettings ? "Hide" : "Show"}
+									</button>
+							</Show>
 						</div>
 					</Show>
 				</div>
 			</div>
 			<Show when={!props.systemRoleEditing()}>
-				<Show when={props.currentSystemRoleSettings().settings}>
+				<Show when={props.currentSystemRoleSettings().settings && !hideRole()}>
 					<div>
 						<div class='flex items-center gap-1 op-50 dark:op-60'>
 							<span>System Role:</span>
