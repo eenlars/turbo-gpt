@@ -23,7 +23,7 @@ export default () => {
 
 	createEffect(() => {
 		const storedValue =
-			(JSON.parse(localStorage.getItem('temp') || '') as number) || 30;
+			JSON.parse(localStorage.getItem('temp') || '30') || 30;
 		setTemperature(Number(storedValue));
 	});
 
