@@ -154,11 +154,7 @@ export default (props: Props) => {
 						</button>
 					</span>
 				</Show>
-				<Show
-					when={
-						isFromMemory() || !props.systemRoleEditing()
-					}
-				>
+				<Show when={isFromMemory() || !props.systemRoleEditing()}>
 					<span
 						onClick={handleAddSystemRole}
 						class='inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 mr-4 rounded-md transition-colors cursor-pointer hover:bg-slate/50'
@@ -189,13 +185,13 @@ export default (props: Props) => {
 								)}
 							</For>
 							<Show when={props.currentSystemRoleSettings().name}>
-							<button
-										class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer`}
-										onClick={() => setHideRole(!hideRole())}
-										disabled={props.systemRoleSaveEditing()}
-									>
-										{props.currentSystemRoleSettings ? "Hide" : "Show"}
-									</button>
+								<button
+									class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer`}
+									onClick={() => setHideRole(!hideRole())}
+									disabled={props.systemRoleSaveEditing()}
+								>
+									{props.currentSystemRoleSettings ? 'Hide' : 'Show'}
+								</button>
 							</Show>
 						</div>
 					</Show>
