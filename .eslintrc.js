@@ -29,7 +29,6 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       rules: {
         "no-tabs": "off",
-        "prettier/prettier": "on",
       },
     },
   ],
