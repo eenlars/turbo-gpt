@@ -38,33 +38,34 @@ export default ({ role, message, showRetry, onRetry }: Props) => {
 	});
 
 	const htmlString = () => {
-		const md = MarkdownIt({ html: true }).use(mdKatex).use(mdHighlight);
-		const fence = md.renderer.rules.fence!;
-		md.renderer.rules.fence = (...args) => {
-			const [tokens, idx] = args;
-			const token = tokens[idx];
-			const rawCode = fence(...args);
+    const md = MarkdownIt({
+      linkify: true,
+      breaks: true,
+    }).use(mdKatex).use(mdHighlight)
+    const fence = md.renderer.rules.fence!
+    md.renderer.rules.fence = (...args) => {
+      const [tokens, idx] = args
+      const token = tokens[idx]
+      const rawCode = fence(...args)
 
-			return `<div relative>
-      <div data-code=${encodeURIComponent(
-				token.content
-			)} class="copy-btn absolute top-12px right-12px z-3 flex justify-center items-center border b-transparent w-8 h-8 p-2 bg-dark-300 op-90 transition-all group cursor-pointer">
+      return `<div relative>
+      <div data-code=${encodeURIComponent(token.content)} class="copy-btn gpt-copy-btn group">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Z" /><path fill="currentColor" d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z" /></svg>
-            <div class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs c-white inline-flex justify-center items-center  rounded absolute z-1 transition duration-600 whitespace-nowrap -top-8" group-hover:opacity-100>
+            <div class="group-hover:op-100 gpt-copy-tips">
               ${copied() ? 'Copied' : 'Copy'}
             </div>
       </div>
       ${rawCode}
-      </div>`;
-		};
+      </div>`
+    }
 
-		if (typeof message === 'function') {
-			return md.render(message());
-		} else if (typeof message === 'string') {
-			return md.render(message);
-		}
-		return '';
-	};
+    if (typeof message === 'function')
+      return md.render(message())
+    else if (typeof message === 'string')
+      return md.render(message)
+
+    return ''
+  }
 
 	return (
 		<div class='py-1 -mx-4 px-4 transition-colors md:hover:bg-slate/3'>
