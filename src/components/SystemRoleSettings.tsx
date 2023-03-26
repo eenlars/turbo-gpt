@@ -167,30 +167,35 @@ export default (props: Props) => {
 			<div class='flex flex-row flex-wrap justify-between items-center'>
 				<div class='flex items-center flex-wrap gap-1 op-50 dark:op-60'>
 					<Show when={systems().length > 0 && !props.systemRoleEditing()}>
-						<div class='flex flex-row items-center gap-1 op-50 dark:op-60'>
+						<div class='flex flex-row flex-wrap items-center gap-1 op-50 dark:op-60'>
 							<For each={systems()}>
 								{(system: System) => (
 									<button
-										class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer 
-              ${
-								isSelected(system)
-									? 'bg-slate/100 text-black hover:bg-slate/50'
-									: 'bg-slate/20 hover:bg-slate/100'
-							}`}
+										class={`inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer ${
+											isSelected(system)
+												? 'bg-slate/100 text-black hover:bg-slate/50'
+												: 'bg-slate/20 hover:bg-slate/100'
+										}`}
 										onClick={() => handleSystemSelect(system)}
 										disabled={props.systemRoleSaveEditing()}
+										style='max-width: 100%;'
 									>
-										{system.name}
+										<span class='inline-block text-wrap overflow-hidden overflow-ellipsis whitespace-nowrap'>
+											{system.name}
+										</span>
 									</button>
 								)}
 							</For>
-							<Show when={props.currentSystemRoleSettings().name}>
+							<Show when={props.currentSystemRoleSettings().settings}>
 								<button
-									class="inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer"
+									class='inline-flex items-center justify-center gap-1 text-sm px-2 py-1 mr-2 my-2 transition-colors cursor-pointer'
 									onClick={() => setHideRole(!hideRole())}
 									disabled={props.systemRoleSaveEditing()}
+									style='max-width: 100%;'
 								>
-									{hideRole() ? 'Show' : 'Hide'}
+									<span class='inline-block text-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap'>
+										{hideRole() ? 'Show' : 'Hide'}
+									</span>
 								</button>
 							</Show>
 						</div>
