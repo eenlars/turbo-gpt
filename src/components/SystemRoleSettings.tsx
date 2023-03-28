@@ -26,7 +26,7 @@ export default (props: Props) => {
 	const getSystems = () => {
 		try {
 			const storedValue =
-				(JSON.parse(localStorage.getItem('systems') || '') as System[]) || [];
+				(JSON.parse(localStorage.getItem('systems') || '[]') as System[]) || [];
 			return setSystems(storedValue);
 		} catch (error) {
 			console.error(error);
