@@ -36,11 +36,14 @@ export default (props: Props) => {
 
 	onMount(() => getSystems());
 
+	// Only set temporary system
 	const handleSetSystem = () => {
 		props.setCurrentSystemRoleSettings({ settings: systemInputRef.value });
+		setHideRole(false);
 		props.setSystemRoleEditing(false);
 	};
 
+	// Save in localstorage
 	const saveSystem = () => {
 		if (systemInputRef2.value?.length < 1 || systemInputRef.value?.length < 1)
 			return;
@@ -49,6 +52,8 @@ export default (props: Props) => {
 			name: systemInputRef2.value,
 			settings: systemInputRef.value,
 		};
+
+		console.log(system);
 
 		props.setCurrentSystemRoleSettings(system);
 
