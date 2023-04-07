@@ -15,6 +15,7 @@ export const generatePayload = (apiKey: string, messages: ChatMessage[], tempera
   }),
 })
 
+
 export const parseOpenAIStream = (rawResponse: Response) => {
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
