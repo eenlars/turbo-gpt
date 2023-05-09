@@ -14,6 +14,7 @@ async function digestMessage(message: string) {
   } else {
     return sha256(message).toString()
   }
+  
 }
 
 export const generateSignature = async (payload: AuthPayload) => {
